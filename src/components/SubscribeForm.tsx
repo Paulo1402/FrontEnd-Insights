@@ -1,7 +1,8 @@
 'use client'
 
 import { FormEventHandler, useState } from 'react'
-import { ApiResponse } from '../app/types/subscribers'
+import { ISubscriber } from '../app/types/subscribers'
+import localStorage from 'local-storage'
 
 export default function SubscribeForm() {
   const [email, setEmail] = useState('')
@@ -9,11 +10,13 @@ export default function SubscribeForm() {
   const handleSubmit: FormEventHandler = async e => {
     e.preventDefault()
 
-    const response: ApiResponse = await fetch('/api/subscribers', {
+    const response: ISubscriber = await fetch('/api/subscribers', {
       method: 'POST',
       body: JSON.stringify({ email }),
       headers: { 'Content-Type': 'application/json' }
     }).then(res => res.json())
+
+    localStorage('email', email)
 
     if (response.createdAt) {
       setEmail('')

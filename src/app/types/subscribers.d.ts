@@ -1,6 +1,5 @@
-export interface ApiResponse {
+export interface ISubscriber {
   id: number
   email: string
-  createdAt: string
-  updatedAt: string
+  createdAt: Date
 }

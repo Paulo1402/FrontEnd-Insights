@@ -23,7 +23,7 @@ export default function RootLayout({
             <nav className="flex gap-10 [&>a:hover]:text-gray-300">
               <Link href="/">Início</Link>
               <Link href="/about">Sobre</Link>
-              <Link href="/subscribers">Inscritos</Link>
+              <Link href="/admin/subscribers">Inscritos</Link>
             </nav>
           </header>
 
