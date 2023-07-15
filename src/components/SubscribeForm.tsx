@@ -13,7 +13,9 @@ export default function SubscribeForm() {
         method: 'POST',
         body: JSON.stringify({ email }),
         headers: { 'Content-Type': 'application/json' }
-      }).then(res => res.json())
+      })
+        .then(res => res.json())
+        .catch(err => console.log(err))
 
     if (response.created) {
       setEmail('')

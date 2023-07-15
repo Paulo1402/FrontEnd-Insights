@@ -8,7 +8,9 @@ export default async function Subscriber() {
         revalidate: 0
       }
     }
-  ).then(res => res.json())
+  )
+    .then(res => res.json())
+    .catch(err => console.log(err))
 
   return (
     <main>
