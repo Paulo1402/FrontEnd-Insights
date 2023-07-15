@@ -9,8 +9,14 @@ export default async function Subscriber() {
       }
     }
   )
-    .then(res => res.json())
-    .catch(err => console.log(err))
+    .then(res => {
+      try {
+        return res.json()
+      }
+      catch (err) {
+        console.log(err)
+      }
+    })
 
   return (
     <main>
