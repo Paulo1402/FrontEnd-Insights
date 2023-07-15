@@ -8,32 +8,30 @@ export default function SubscribeForm() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    const response: { created: boolean; error?: { code: string } } =
-      await fetch('/api/subscribers', {
-        method: 'POST',
-        body: JSON.stringify({ email }),
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => {
-          try {
-            return res.json()
-          }
-          catch (err) {
-            console.log(err)
-          }
-        })
+    const response = await fetch('/api/subscribers', {
+      method: 'POST',
+      body: JSON.stringify({ email }),
+      headers: { 'Content-Type': 'application/json' }
+    })
 
-    if (response.created) {
-      setEmail('')
-      alert('Email cadastrado com sucesso!')
-    } else {
-      switch (response.error?.code) {
-        case 'SQLITE_CONSTRAINT':
-          alert('Email já cadastrado!')
-          break
-        default:
-          alert('Algo deu errado!')
+    try {
+      const responseJson: { created: boolean; error?: { code: string } } =
+        await response.json()
+
+      if (responseJson.created) {
+        setEmail('')
+        alert('Email cadastrado com sucesso!')
+      } else {
+        switch (responseJson.error?.code) {
+          case 'SQLITE_CONSTRAINT':
+            alert('Email já cadastrado!')
+            break
+          default:
+            alert('Algo deu errado!')
+        }
       }
+    } catch (err) {
+      console.error(err)
     }
   }
 

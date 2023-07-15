@@ -1,7 +1,7 @@
 import { ISubscriber } from '@/app/types/subscribers'
 
 export default async function Subscriber() {
-  const rows: ISubscriber[] = await fetch(
+  const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/subscribers`,
     {
       next: {
@@ -9,14 +9,16 @@ export default async function Subscriber() {
       }
     }
   )
-    .then(res => {
-      try {
-        return res.json()
-      }
-      catch (err) {
-        console.log(err)
-      }
-    })
+  
+  // Esse "workaround" foi devido a um bug durante build na Vercel
+  let rows: ISubscriber[] | string = await response.text()
+  
+  try {
+    rows = JSON.parse(rows)
+  }
+  catch (err) {
+    console.error(err)
+  }
 
   return (
     <main>
