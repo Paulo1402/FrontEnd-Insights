@@ -1,7 +1,14 @@
 import { ISubscriber } from '@/app/types/subscribers'
 
 export default async function Subscriber() {
-  const rows: ISubscriber[] = []
+  const rows: ISubscriber[] = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/subscribers`,
+    {
+      next: {
+        revalidate: 0
+      }
+    }
+  ).then(res => res.json())
 
   return (
     <main>
@@ -19,7 +26,7 @@ export default async function Subscriber() {
             <tr key={subscriber.id} className="[&>*]:p-4">
               <td>{subscriber.id}</td>
               <td className="text-left">{subscriber.email}</td>
-              <td>{subscriber.createdAt.toDateString()}</td>
+              <td>{subscriber.createdAt}</td>
             </tr>
           ))}
         </tbody>

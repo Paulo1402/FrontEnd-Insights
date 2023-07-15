@@ -1,20 +1,18 @@
-import { NextResponse } from "next/server";
-import localStorage from "local-storage";
+import { NextResponse } from 'next/server'
+import { getSubscribers, insertSubscriber} from '@/services/connection'
 
 export async function GET(request: Request) {
-  return NextResponse.json('Hello World!')
+  const subscribers = await getSubscribers()
+  return NextResponse.json(subscribers)
 }
 
 export async function POST(request: Request) {
-  const body = await request.json()
-
-  localStorage('email', body.email)
+  const body: {email: string} = await request.json()
 
   try {
-    
-  } catch (err) { 
-    
+    await insertSubscriber(body.email)
+    return NextResponse.json({ created: true })
+  } catch (error: any) {
+    return NextResponse.json({ created: false, error: error })
   }
-
-  return NextResponse.json({ createdAt: new Date()})
 }

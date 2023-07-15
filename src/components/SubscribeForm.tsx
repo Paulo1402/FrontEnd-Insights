@@ -1,28 +1,31 @@
 'use client'
 
-import { FormEventHandler, useState } from 'react'
-import { ISubscriber } from '../app/types/subscribers'
-import localStorage from 'local-storage'
+import { FormEvent, useState } from 'react'
 
 export default function SubscribeForm() {
   const [email, setEmail] = useState('')
 
-  const handleSubmit: FormEventHandler = async e => {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    const response: ISubscriber = await fetch('/api/subscribers', {
-      method: 'POST',
-      body: JSON.stringify({ email }),
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => res.json())
+    const response: { created: boolean; error?: { code: string } } =
+      await fetch('/api/subscribers', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: { 'Content-Type': 'application/json' }
+      }).then(res => res.json())
 
-    localStorage('email', email)
-
-    if (response.createdAt) {
+    if (response.created) {
       setEmail('')
       alert('Email cadastrado com sucesso!')
     } else {
-      alert('Algo deu errado!')
+      switch (response.error?.code) {
+        case 'SQLITE_CONSTRAINT':
+          alert('Email já cadastrado!')
+          break
+        default:
+          alert('Algo deu errado!')
+      }
     }
   }
 
