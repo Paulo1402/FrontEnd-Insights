@@ -11,10 +11,10 @@ export default async function Subscriber() {
   )
   
   // Esse "workaround" foi devido a um bug durante build na Vercel
-  let rows: ISubscriber[] | string = await response.text()
+  let rows: ISubscriber[] = []
   
   try {
-    rows = JSON.parse(rows)
+    rows = await response.json()
   }
   catch (err) {
     console.error(err)
