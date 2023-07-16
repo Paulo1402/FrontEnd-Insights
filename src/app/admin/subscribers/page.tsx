@@ -1,4 +1,31 @@
+// import { getSubscribers as getData } from '@/services/connection'
 import { ISubscriber } from '@/app/types/subscribers'
+
+
+export const metadata = {
+  title: 'Inscrições | Front-end Insights'
+}
+
+// export const dynamic = 'force-dynamic'
+
+// async function getSubscribers() {
+//   const response = await fetch(
+//     `${process.env.NEXT_PUBLIC_API_URL}/api/subscribers`,
+//     {
+//       next: {
+//         revalidate: 0
+//       }
+//     }
+//   )
+
+//   if (!response.ok) {
+//     throw new Error('Failed to fetch data')
+//   }
+
+//   return response.json()
+//   return getData()
+// }
+
 
 export default async function Subscriber() {
   const response = await fetch(
@@ -19,6 +46,7 @@ export default async function Subscriber() {
   catch (err) {
     console.error(err)
   }
+  // const rows: ISubscriber[] = await getSubscribers()
 
   return (
     <main>
