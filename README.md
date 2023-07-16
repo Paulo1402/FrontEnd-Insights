@@ -12,4 +12,5 @@ Aplicação que simula uma newsletter sobre FrontEnd usando alguns dos principai
 - React
 - NextJs
 - Tailwind CSS
-- SQLite
+- PostgreSQL
+- Vercel
