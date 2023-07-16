@@ -11,8 +11,7 @@ export async function POST(request: Request) {
   const body: {email: string} = await request.json()
 
   try {
-    insertSubscriber(body.email)
-    
+    await insertSubscriber(body.email)
     return NextResponse.json({ created: true })
   } catch (error: any) {
     return NextResponse.json({ created: false, error: error })

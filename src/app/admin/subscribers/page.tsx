@@ -36,16 +36,13 @@ export default async function Subscriber() {
       }
     }
   )
-  
-  // Esse "workaround" foi devido a um bug durante build na Vercel
-  let rows: ISubscriber[] = []
-  
-  try {
-    rows = await response.json()
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
   }
-  catch (err) {
-    console.error(err)
-  }
+
+  const rows:  ISubscriber[] = await response.json()
+  
   // const rows: ISubscriber[] = await getSubscribers()
 
   return (
