@@ -1,46 +1,46 @@
-import { Subscriber } from '@/app/types/subscriber'
-import sqlite3 from 'sqlite3'
+// import { Subscriber } from '@/app/types/subscriber'
+// import sqlite3 from 'sqlite3'
 
-function connectToDatabase() {
-  return new sqlite3.Database('subscribers.db')
-}
+// function connectToDatabase() {
+//   return new sqlite3.Database('subscribers.db')
+// }
 
-function getSubscribers() {
-  const db = connectToDatabase()
+// function getSubscribers() {
+//   const db = connectToDatabase()
 
-  return new Promise<Subscriber[]>((resolve, reject) => {
-    db.all('SELECT * FROM Subscriber', (error, rows: Subscriber[]) => {
-      db.close()
+//   return new Promise<Subscriber[]>((resolve, reject) => {
+//     db.all('SELECT * FROM Subscriber', (error, rows: Subscriber[]) => {
+//       db.close()
 
-      if (error) reject(error)
-      else resolve(rows)
-    })
-  })
-}
+//       if (error) reject(error)
+//       else resolve(rows)
+//     })
+//   })
+// }
 
-function insertSubscriber(email: string) {
-  const db = connectToDatabase()
+// function insertSubscriber(email: string) {
+//   const db = connectToDatabase()
 
-  return new Promise<void>((resolve, reject) => {
-    db.run('INSERT INTO Subscriber (email) VALUES (?)', email, error => {
-      db.close()
+//   return new Promise<void>((resolve, reject) => {
+//     db.run('INSERT INTO Subscriber (email) VALUES (?)', email, error => {
+//       db.close()
 
-      if (error) reject(error)
-      else resolve()
-    })
-  })
-}
+//       if (error) reject(error)
+//       else resolve()
+//     })
+//   })
+// }
 
-const db = connectToDatabase()
+// const db = connectToDatabase()
 
-db.run(`
-  CREATE TABLE IF NOT EXISTS Subscriber (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`)
+// db.run(`
+//   CREATE TABLE IF NOT EXISTS Subscriber (
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     email TEXT UNIQUE,
+//     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+//   )
+// `)
 
-db.close()
+// db.close()
 
-export { getSubscribers, insertSubscriber }
+// export { getSubscribers, insertSubscriber }
