@@ -2,34 +2,35 @@
 
 import { FormEvent, useState } from 'react'
 
+type CreatedResponse = {
+  created: boolean
+  error?: { code: string}
+}
+
 export default function SubscribeForm() {
   const [email, setEmail] = useState('')
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
 
-    const response: { created: boolean; error?: { code: string } } =
+    const response: CreatedResponse =
       await fetch('/api/subscribers', {
         method: 'POST',
         body: JSON.stringify({ email }),
         headers: { 'Content-Type': 'application/json' }
       }).then(res => res.json())
 
-    try {
-      if (response.created) {
-        setEmail('')
-        alert('Email cadastrado com sucesso!')
-      } else {
-        switch (response.error?.code) {
-          case 'SQLITE_CONSTRAINT':
-            alert('Email já cadastrado!')
-            break
-          default:
-            alert('Algo deu errado!')
-        }
+    if (response.created) {
+      setEmail('')
+      alert('Email cadastrado com sucesso!')
+    } else {
+      switch (response.error?.code) {
+        case '23505':
+          alert('Email já cadastrado!')
+          break
+        default:
+          alert('Algo deu errado!')
       }
-    } catch (err) {
-      console.error(err)
     }
   }
 

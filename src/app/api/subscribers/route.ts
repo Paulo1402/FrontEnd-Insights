@@ -2,8 +2,17 @@ import { NextResponse } from 'next/server'
 import { getSubscribers, insertSubscriber} from '@/services/connection'
 
 
-export async function GET(request: Request) {
-  const subscribers = await getSubscribers()
+export async function GET() {
+  const subscribers = (await getSubscribers()).map(
+    (subscriber) => {
+      return {
+        id: subscriber.id,
+        email: subscriber.email,
+        createdAt: subscriber.createdat
+      }
+    }
+  )
+
   return NextResponse.json(subscribers)
 }
 

@@ -1,75 +1,15 @@
-import { ISubscriber } from '@/app/types/subscribers'
-import sqlite3 from 'sqlite3'
+import { sql } from "@vercel/postgres"
 
-function connectToDatabase() {
-  return new sqlite3.Database('subscribers.db')
+
+async function getSubscribers() {
+  const { rows } = await sql`SELECT * FROM subscriber`
+  return rows
 }
 
-function getSubscribers() {
-  const db = connectToDatabase()
-
-  return new Promise<ISubscriber[]>((resolve, reject) => {
-    db.all('SELECT * FROM Subscriber', (error, rows: ISubscriber[]) => {
-      db.close()
-
-      if (error) reject(error)
-      else resolve(rows)
-    })
-  })
+async function insertSubscriber(email: string) {
+  // Vercel faz o tratamento desse tipo de query para evitar SQL Injection
+  await sql`INSERT INTO subscriber (email) VALUES (${email})`
 }
-
-function insertSubscriber(email: string) {
-  const db = connectToDatabase()
-
-  return new Promise<void>((resolve, reject) => {
-    db.run('INSERT INTO Subscriber (email) VALUES (?)', email, error => {
-      db.close()
-
-      if (error) reject(error)
-      else resolve()
-    })
-  })
-}
-
-const db = connectToDatabase()
-
-db.run(`
-  CREATE TABLE IF NOT EXISTS Subscriber (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`)
-
-db.close()
-
-// const data = [
-//   {
-//     id: 0,
-//     email: 'paulobenatto02@gmail.com',
-//     createdAt: '2023-07-16'
-//   }
-// ]
-
-// let id = 0
-
-// function getSubscribers() {
-//   return data
-// }
-
-// function insertSubscriber(email: string) {
-//   id++
-
-//   data.push(
-//     {
-//       id,
-//       email,
-//       createdAt: new Date().toDateString()
-//     }
-//   )
-
-//   console.log(data)
-// }
 
 export {
   getSubscribers,
