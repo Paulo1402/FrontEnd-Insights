@@ -4,6 +4,8 @@ Aplicação que simula uma newsletter sobre FrontEnd usando alguns dos principai
 
 ![preview](./.github/preview.png)
 
+[Clique aqui para acessar](https://front-end-insights.vercel.app/)
+
 ## 🛠 Tecnologias
 
 - TypeScript
